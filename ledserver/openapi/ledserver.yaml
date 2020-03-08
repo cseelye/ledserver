@@ -1,0 +1,121 @@
+swagger: "2.0"
+info:
+  title: ledserver
+  version: 1.0.0
+  description: Control LED devices
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /leds:
+    get:
+      operationId: app.list_leds
+      summary: List all leds
+      description: Gets a list of all `LED` entities.
+      responses:
+        "200":
+          description: Return an array of `LED` entities.
+          schema:
+            type: object
+            properties:
+              leds:
+                type: array
+                items:
+                  $ref: '#/definitions/LED'
+  /leds/{led_dev}:
+    get:
+      parameters:
+      - $ref: '#/parameters/led_dev'
+      responses:
+        "200":
+          description: Successful response - returns a single `LED`.
+          schema:
+            $ref: '#/definitions/LED'
+        "404":
+          description: LED does not exist
+      operationId: app.get_led
+      summary: Get a LED
+      description: Gets the details of a single instance of a `LED`.
+  /leds/{led_dev}/color:
+    get:
+      parameters:
+      - $ref: '#/parameters/led_dev'
+      responses:
+        "200":
+          description: Success - returns the color of an LED
+          schema:
+            type: integer
+      operationId: app.get_led_color
+      summary: Get the color of an LED
+    put:
+      parameters:
+      - $ref: '#/parameters/led_dev'
+      - name: color
+        schema:
+          type: integer
+        in: body
+        required: true
+      responses:
+        "200":
+          description: Success
+      operationId: app.set_led_color
+      summary: Set the color of an LED
+  /leds/{led_dev}/fade-time:
+    put:
+      parameters:
+      - $ref: '#/parameters/led_dev'
+      - name: fade_time
+        description: Time, in milliseconds
+        schema:
+          type: integer
+        in: body
+        required: true
+      responses:
+        "200":
+          description: Success
+      operationId: app.set_led_fade
+      summary: Set the color transition time of an LED (ms)
+  /leds/{led_dev}/sequence:
+    put:
+      parameters:
+      - $ref: '#/parameters/led_dev'
+      - name: sequence
+        schema:
+          type: string
+        in: body
+        required: true
+      responses:
+        "200":
+          description: Success
+      operationId: app.set_led_sequence
+      summary: Set LED color sequence
+
+parameters:
+  led_dev:
+    name: led_dev
+    description: LED device
+    in: path
+    required: true
+    type: string
+    pattern: ^[a-zA-Z0-9]+$
+definitions:
+  LED:
+    description: A controllable LED on the system
+    type: object
+    required:
+      - device
+    properties:
+      device:
+        type: string
+      type:
+        type: string
+      color:
+        type: string
+    example:
+      device: ttyACM0
+      type: statusb
+      color: ff00ff
