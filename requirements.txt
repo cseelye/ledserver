@@ -14,9 +14,10 @@ MarkupSafe==1.1.1
 openapi-spec-validator==0.2.8
 pyrsistent==0.15.7
 pyserial==3.4
-pystatusb==1.0.2
+pystatusb==1.1.0
 PyYAML==5.3
 requests==2.23.0
 six==1.14.0
 urllib3==1.25.8
+uWSGI==2.0.18
 Werkzeug==1.0.0

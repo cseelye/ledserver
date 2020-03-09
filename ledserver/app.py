@@ -1,17 +1,24 @@
 import connexion
+from pathlib import Path
 from pystatusb import StatUSB
 
 
 def list_leds():
-    led = StatUSB()
-    return [{"device":"ttyACM0",
-             "type":"statusb",
-             "color": led.get_color()
-            }]
+    leds = []
+    for devname in StatUSB.list_devices():
+        led = StatUSB(device=devname)
+        try:
+            leds.append({"device": Path(devname).name,
+                         "type":"statusb",
+                         "color": led.get_color(),
+                        })
+        except (OSError, ValueError):
+            pass
+    return leds
 
 def get_led(led_dev):
     led = StatUSB(device="/dev/{}".format(led_dev))
-    return {"device":"ttyACM0",
+    return {"device":led_dev,
             "type":"statusb",
             "color": led.get_color()
            }
