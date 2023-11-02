@@ -16,7 +16,7 @@ pyrsistent==0.15.7
 pyserial==3.4
 pystatusb==1.1.0
 PyYAML==5.4
-requests==2.23.0
+requests==2.31.0
 six==1.14.0
 urllib3==1.26.18
 uWSGI==2.0.22
